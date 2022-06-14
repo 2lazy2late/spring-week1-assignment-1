@@ -32,11 +32,17 @@ public class TaskService {
     }
   }
 
-  public String getTasks(long taskId) throws IOException {
+  public String getTasks(long taskId) throws Exception {
+
+    System.out.println(taskId);
     if (taskId == 0L) {
       return tasksToJson();
     } else {
-      return tasksToJson(taskMap.get(taskId));
+      if (taskMap.containsKey(taskId)) {
+        return tasksToJson(taskMap.get(taskId));
+      } else {
+        throw new Exception();
+      }
     }
   }
 

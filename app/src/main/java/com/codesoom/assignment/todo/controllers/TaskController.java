@@ -16,10 +16,13 @@ public class TaskController {
     try {
       Long lTaskId = taskService.getTaskIdFromPath(sRequestPath);
       String responseContent = taskService.getTasks(lTaskId);
-      int responseStatus = "[]".equals(responseContent) ? Response.NO_CONTENT : Response.OK;
-      return new Response(responseStatus, responseContent);
+
+      // 값이 없으면 NO_CONTENT Response 를 보내려 했으나 테스트 통과가 안되어 변경
+      // int responseStatus = "[]".equals(responseContent) ? Response.NO_CONTENT : Response.OK;
+
+      return new Response(Response.OK, responseContent);
     } catch (Exception e) {
-      return new Response(Response.BAD_REQUEST, "Task Id 는 숫자 포맷이어야 합니다");
+      return new Response(Response.NOT_FOUND, "Task Id 를 찾지 못하였습니다");
     }
   }
 
@@ -51,7 +54,7 @@ public class TaskController {
     try {
       Long lTaskId = taskService.getTaskIdFromPath(sRequestPath);
       String responseContent = taskService.deleteTask(lTaskId);
-      return new Response(Response.OK, responseContent);
+      return new Response(Response.NO_CONTENT, responseContent);
     } catch (Exception e) {
       if (e.getMessage().equals("NOT_EXIST")) {
         return new Response(Response.NOT_FOUND, "Task Id를 찾을 수 없어, 삭제하지 못했습니다");
